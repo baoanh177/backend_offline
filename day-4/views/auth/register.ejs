@@ -1,0 +1,44 @@
+<h1>Register</h1>
+<% if (msg.length) { %>
+    <div class="alert alert-success">
+        <%=msg%> <a href="/login" class="underline">Đăng nhập</a>
+    </div>
+<% } %>
+<form action="" method="post" class="form">
+    <input
+        type="text"
+        name="username"
+        placeholder="Enter name..."
+        class="form-control"
+        value="<%= req.old.username %>"
+    />
+    <span class="text text-danger"><%= req.errors.username %></span>
+    <input
+        type="text"
+        name="email"
+        placeholder="Enter email..."
+        class="form-control mt-3"
+        value="<%= req.old.email %>"
+    />
+    <span class="text text-danger"><%= req.errors.email %></span>
+    <input
+        type="password"
+        name="password"
+        placeholder="Enter password..."
+        class="form-control mt-3"
+        value="<%= req.old.password %>"
+    />
+    <span class="text text-danger"><%= req.errors.password %></span>
+    <input
+        type="password"
+        name="confirm"
+        placeholder="Confirm password..."
+        class="form-control mt-3"
+        value="<%= req.old.confirm %>"
+    />
+    <span class="text text-danger"><%= req.errors.confirm %></span>
+    <div class="mt-3">
+        <button class="btn btn-primary">Login</button>
+        <a href="/" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

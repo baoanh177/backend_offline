@@ -5,6 +5,8 @@ const authController = require("../controllers/auth.controller")
 
 router.get("/login", authController.index)
 router.post("/login", authController.login)
+router.get("/register", authController.register)
+router.post("/register", authController.handleRegister)
 router.get("/profile", (req, res) => {
     const user = req.session.user
     if(user) {
