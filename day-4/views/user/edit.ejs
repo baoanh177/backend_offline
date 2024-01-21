@@ -1,0 +1,39 @@
+<h1>Chỉnh sửa thông tin</h1>
+<% if (msg.length) { %>
+    <div class="alert alert-success"><%= msg %></div>
+<% } %> 
+<form action="" method="post" class="form">
+    <div class="mb-3">
+        <div class="input-group">
+            <div class="input-group-prepend col-2">
+                <span class="input-group-text" id="inputGroup-sizing-default">Username</span>
+            </div>
+            <input type="text" class="form-control" name="username" value="<%= req.old.username ?? user.username %>">
+        </div>
+        <span class="text text-danger"><%= req.errors.username %></span>
+    </div>
+    <div class="mb-3">
+        <div class="input-group">
+            <div class="input-group-prepend col-2">
+                <span class="input-group-text" id="inputGroup-sizing-default">Email</span>
+            </div>
+            <input type="text" class="form-control" name="email" value="<%= req.old.email ?? user.email %>">
+        </div>
+        <span class="text text-danger"><%= req.errors.email %></span>
+    </div>
+    <div class="mb-3">
+        <div class="input-group">
+            <div class="input-group-prepend col-2">
+                <span class="input-group-text" id="inputGroup-sizing-default">Password</span>
+            </div>
+            <input type="password" class="form-control" readonly disabled value="<%= req.old.password ?? user.password %>">
+            <a href="/password-change" class="btn btn-secondary">Thay đổi mật khẩu</a>
+        </div>
+        <span class="text text-danger"><%= req.errors.password %></span>
+    </div>
+    <div class="mt-3">
+        <button class="btn btn-primary" type="submit">Lưu</button>
+        <a href="/profile" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+

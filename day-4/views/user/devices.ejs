@@ -1,0 +1,46 @@
+<h1>Devices</h1>
+<a href="/profile" class="btn btn-secondary mb-3">Back</a>
+<% if (msg.length) { %>
+    <div class="alert alert-success"><%=msg%></div>
+<% } %>
+<table class="table table-bordered">
+    <thead class="table table-info text-center align-middle">
+        <tr>
+            <th colspan="2">OS</th>
+            <th colspan="2">Client</th>
+            <th colspan="2">Device</th>
+            <th rowspan="2">Last active</th>
+            <th rowspan="2">Action</th>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <th>Version</th>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Brand</th>
+        </tr>
+    </thead>
+    <tbody class="text-center align-middle">
+        <% devices.forEach(device => { %>
+            <tr class="<%= device.agent == user_agent ? 'table-success' : ''%>">
+                <td><%= device.os_name || "Unknown"%></td>
+                <td><%= device.os_version || "Unknown"%></td>
+                <td><%= device.client_type || "Unknown"%></td>
+                <td><%= device.client_name || "Unknown"%></td>
+                <td><%= device.device_type || "Unknown"%></td>
+                <td><%= device.device_brand || "Unknown"%></td>
+                <td><%= device.last_active || "Unknown"%></td>
+                <td>
+                    <% if (device.agent != user_agent) { %>
+                        <form action="/devices/<%=device.id%>" method="post" onsubmit="return confirm('Đăng xuất thiết bị?')">
+                            <button class="btn btn-danger">Logout</button>
+                        </form>
+                    <% }else { %>
+                        <button class="btn btn-secondary">Logout</button>
+                    <% } %>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

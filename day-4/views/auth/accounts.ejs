@@ -1,0 +1,12 @@
+<h1>Tài khoản đã lưu</h1>
+<% accounts.forEach((account, index) => { %>
+    <form action="/accounts/<%=index%>" method="post">
+        <div class="mb-3">
+            <div class="input-group">
+                <div class="form-control"><%=account.username%></div>
+                <button class="btn btn-success">Đăng nhập bằng tài khoản này</button>
+            </div>
+        </div>
+    </form>
+<% }) %>
+<a href="/login" class="btn btn-info">Đăng nhập bằng tài khoản khác</a>

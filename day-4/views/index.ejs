@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><%= title %></title>
+        <title>Bao Anh</title>
     </head>
     <body>
         <h1>Home Page</h1>
-        <a href="/login" class="btn btn-primary">Login</a>
+        <% if (msg.length) { %>
+            <div class="alert alert-success">Hello <%=msg%>!</div>
+        <% } %>
+        <% if (user) { %>
+            <a href="/profile" class="btn btn-success">Profile</a>
+        <% }else { %>
+            <a href="/login" class="btn btn-primary">Login</a>
+        <% } %>
     </body>
 </html>

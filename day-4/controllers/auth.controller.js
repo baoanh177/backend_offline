@@ -1,26 +1,46 @@
 const { string } = require('yup')
-const model = require('../models/index')
-const User = model.User
+const { User, User_device } = require('../models/index')
+const DeviceDetector = require('node-device-detector')
+
+const detector = new DeviceDetector({
+    clientIndexes: true,
+    deviceIndexes: true,
+    deviceAliasCode: false,
+})
 
 module.exports = {
-    index: (req, res) => {
+    index: async (req, res) => {
         if(req.session.user) {
             return res.redirect('/profile')
         }
+
+        
+        const user_agent = req.get("User-Agent")
+        const devices = await User_device.findAll({ where: { agent: user_agent } })
+        const users = []
+        if(devices) {
+            for(const device of devices) {
+                const user = await device.getUser()
+                users.push(user)
+            }
+            req.session.accounts = users
+        }
+
         const msg = req.flash('msg')
-        console.log(msg)
-        res.render('auth/login', { req, msg })
+        res.render('auth/login', { req, msg, users })
     },
     login: async (req, res) => {
+        const last_active = req._startTime
+        const user_agent = req.get("User-Agent")
+        const deviceInfo = detector.detect(req.get("User-Agent"))
         const body = await req.validate(req.body, {
             email: string().email('Email không hợp lệ').required('Email không được để trống'),
             password: string().required('Mật khẩu không được để trống')
         })
 
-        if(!body) {
+        if(!body) { 
             return res.redirect('/login')
         }
-
         
         const user = await User.findOne({
             where: { 
@@ -35,6 +55,25 @@ module.exports = {
                 return res.redirect('/login')
             }
             req.session.user = user
+            const result = await User_device.findOne({
+                where: { agent: user_agent, user_id: user.id }
+            })
+
+            if(!result) {
+                await User_device.create({
+                    agent: user_agent,
+                    os_name: deviceInfo.os.name,
+                    os_version: deviceInfo.os.version,
+                    client_type: deviceInfo.client.type,
+                    client_name: deviceInfo.client.name,
+                    device_type: deviceInfo.device.type,
+                    device_brand: deviceInfo.device.brand,
+                    last_active: new Date(),
+                    user_id: user.id
+                })
+            }else {
+                User_device.update({ last_active: last_active }, { where: { agent: user_agent } })
+            }
             return res.redirect('/profile')
         }
         req.flash('msg', 'Email hoặc mật khẩu không đúng')
@@ -81,5 +120,19 @@ module.exports = {
     logout: (req, res) => {
         req.session.user = null
         res.redirect('/login')
+    },
+    accounts: (req, res) => {
+        const accounts = req.session.accounts
+        if(!accounts) {
+            return res.redirect("/login")
+        }
+        res.render("auth/accounts", { accounts })
+    },
+    handleLogin: async (req, res) => {
+        const { index } = req.params
+        const account = req.session.accounts[index]
+        req.session.user = account
+        req.flash('msg', account.username)
+        res.redirect("/")
     }
 }
