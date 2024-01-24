@@ -1,0 +1,27 @@
+<a href="/" class="btn btn-secondary">Back</a>
+<table class="table table-bordered">
+    <thead class="table-info">
+        <tr>
+            <th>STT</th>
+            <th>To</th>
+            <th>Title</th>
+            <th>Sent at</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% mails.forEach((mail, index) => { %>
+            <tr>
+                <td><%=index%></td>
+                <td><%=mail.to_email%></td>
+                <td><%=mail.title%></td>
+                <td><%=mail.sent_at%></td>
+                <td><%mail.status?'Đã mở':'Chưa mở'%></td>
+                <td class="">
+                    <a href="" class="btn btn-success">Xem chi tiết</a>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

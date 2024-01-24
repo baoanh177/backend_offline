@@ -1,0 +1,89 @@
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="well well-sm">
+                <form class="form-horizontal" action="" method="post">
+                    <fieldset>
+                        <legend class="text-center">Mailgun</legend>
+                        <% if(msg.length) { %>
+                            <div class="alert alert-success"><%=msg%></div>
+                        <% } %>
+                        <!-- Name input-->
+                        <div class="form-group">
+                            <label
+                                class="col-md-3 control-label"
+                                for="to"
+                                >To email</label
+                            >
+                            <div class="col-md-9">
+                                <input
+                                    id="to"
+                                    name="to"
+                                    type="text"
+                                    placeholder="To email"
+                                    class="form-control"
+                                    value="<%=req.old.to%>"
+                                />
+                                <span class="text-danger"><%= req.errors.to %></span>
+                            </div>
+                        </div>
+
+                        <!-- Email input-->
+                        <div class="form-group">
+                            <label
+                                class="col-md-3 control-label"
+                                for="title"
+                                >Your title</label
+                            >
+                            <div class="col-md-9">
+                                <input
+                                    id="title"
+                                    name="title"
+                                    type="text"
+                                    placeholder="Your title"
+                                    class="form-control"
+                                    value="<%=req.old.title%>"
+                                />
+                                <span class="text-danger"><%= req.errors.title %></span>
+                            </div>
+                        </div>
+
+                        <!-- Message body -->
+                        <div class="form-group">
+                            <label
+                                class="col-md-3 control-label"
+                                for="message"
+                                >Your message</label
+                            >
+                            <div class="col-md-9">
+                                <textarea
+                                    class="form-control"
+                                    id="message"
+                                    name="message"
+                                    placeholder="Please enter your message here..."
+                                    rows="5"
+                                ><%=req.old.message%></textarea>
+                                <span class="text-danger"><%= req.errors.message %></span>
+                            </div>
+                        </div>
+
+                        <!-- Form actions -->
+                        <div class="form-group">
+                            <div class="col-md-12 text-right">
+                                <button
+                                type="submit"
+                                class="btn btn-primary"
+                                >
+                                Submit
+                            </button>
+                            <a href="/" class="btn btn-secondary">Back</a>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
