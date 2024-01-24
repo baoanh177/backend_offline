@@ -17,9 +17,9 @@
                 <td><%=mail.to_email%></td>
                 <td><%=mail.title%></td>
                 <td><%=mail.sent_at%></td>
-                <td><%mail.status?'Đã mở':'Chưa mở'%></td>
+                <td><%=mail.status?'Đã mở':'Chưa mở'%></td>
                 <td class="">
-                    <a href="" class="btn btn-success">Xem chi tiết</a>
+                    <a href="/detail/<%=mail.id%>" class="btn btn-success">Xem chi tiết</a>
                 </td>
             </tr>
         <% }) %>

@@ -1,0 +1,8 @@
+<a href="/mail-histories" class="btn btn-secondary">Back</a>
+<ul>
+    <li><b>To: </b><%=mail.to_email%></li>
+    <li><b>Subject: </b><%=mail.title%></li>
+    <li><b>Content: </b><%=mail.content%></li>
+    <li><b>Sent at: </b><%=mail.sent_at%></li>
+    <li><b>Status: </b><%=mail.status?'Đã mở':'Chưa mở'%></li>
+</ul>

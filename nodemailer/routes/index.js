@@ -45,6 +45,14 @@ router.get("/mail-histories", async (req, res) => {
     res.render("histories", { mails })
 })
 
+router.get("/detail/:id", async (req, res) => {
+    const {id} = req.params
+    const mail = await Email_history.findOne({
+        where: {id}
+    })
+    res.render("detail", { mail })
+})
+
 // router.get("/track.png", async (req, res) => {
 //     await Email_history.create({
 //         to_email: "Emiall",
