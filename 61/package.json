@@ -1,0 +1,35 @@
+{
+  "name": "61",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon ./bin/www",
+    "start": "node ./bin/www",
+    "postinstall": "npx sequelize-cli db:migrate",
+    "build": "npm run postinstall && npm run vercel-build"
+  },
+  "dependencies": {
+    "@vercel/postgres": "^0.7.2",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^16.4.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.0",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "passport": "^0.7.0",
+    "passport-google-oauth2": "^0.2.0",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "qrcode": "^1.5.3",
+    "sequelize": "^6.36.0",
+    "uniqid": "^5.4.0",
+    "yup": "^1.3.3"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.6.2"
+  }
+}

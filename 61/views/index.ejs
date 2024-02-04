@@ -1,0 +1,133 @@
+<h1>Rút gọn liên kết</h1>
+<div class="row">
+    <p class="col-8">Công cụ rút ngắn liên kết miễn phí, nhanh nhất.</p>
+    <a href="/auth/logout" class="col-1">Đăng xuất</a>
+</div>
+<div class="row">
+    <div class="col-9">
+        <% if (msg.length) { %>
+        <div class="alert alert-success"><%=msg%></div>
+        <% } %>
+        <table class="table table-bordered" style="font-size: 12px">
+            <thead class="table-success">
+                <tr>
+                    <th width="5%">STT</th>
+                    <th>Liên kết rút gọn</th>
+                    <th>Liên kết gốc</th>
+                    <th>Mật khẩu</th>
+                    <th>CH an toàn</th>
+                    <th>Lượt truy cập</th>
+                    <th>Thời gian tạo</th>
+                    <th colspan="3" class="text-center">Hành dộng</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% links.forEach((link, index) => { 
+                    const short_link = fullUrl + 'short/' + link.link_id  
+                %>
+                <tr>
+                    <td><%=index%></td>
+                    <td>
+                        <a href="<%=short_link%>">
+                            <%=short_link%>
+                        </a>
+                    </td>
+                    <td><%=link.origin_link%></td>
+                    <td><%=link.password%></td>
+                    <td><%=link.safe_navigate%></td>
+                    <td><%=link.clicks%></td>
+                    <td><%=link.created_at%></td>
+                    <td class="col-1 text-center">
+                        <a href="#" class="btn btn-sm btn-warning">Edit</a>
+                    </td>
+                    <td class="col-1 text-center">
+                        <form
+                            action="/delete/<%=link.id%>"
+                            method="post"
+                            onsubmit="return confirm('Chắc chưa?')"
+                        >
+                            <button class="btn btn-sm btn-danger">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-3">
+        <% if (error.length) { %>
+        <div class="alert alert-danger"><%=error%></div>
+        <% } %> <% if (success.length) { %>
+        <div class="alert alert-success"><%=success%></div>
+        <% } %>
+        <form action="" method="post" class="border px-3 pb-3">
+            <div class="mt-3">
+                <label for="" class="fw-bold">Liên kết</label>
+                <input
+                    type="text"
+                    class="origin_link form-control"
+                    name="origin_link"
+                    placeholder="Rút gọn liên kết của bạn"
+                    value="<%=req.old['origin_link']%>"
+                />
+                <span class="text-danger"><%=req.errors["origin_link"]%></span>
+            </div>
+            <div class="mt-3">
+                <label for="" class="fw-bold">Mật khẩu</label>
+                <input
+                    type="password"
+                    class="password form-control"
+                    name="password"
+                    placeholder="Nhập mật khẩu để mở khóa"
+                    value="<%=req.old.password%>"
+                />
+                <span class="text-danger"><%=req.errors.password%></span>
+            </div>
+            <div class="mt-3 d-flex gap-2">
+                <input
+                    type="checkbox"
+                    name="safe_navigation"
+                    id="safe_navigation"
+                    class=""
+                    checked
+                />
+                <label for="safe_navigation">Chuyển hướng an toàn</label>
+            </div>
+            <div class="d-flex gap-2">
+                <input
+                    type="checkbox"
+                    name="customize_id"
+                    id="customize_id"
+                    class=""
+                />
+                <label for="customize_id">Tùy chỉnh ID của liên kết</label>
+            </div>
+            <div class="mt-3 customize-group">
+                <label for="" class="fw-bold">Liên kết rút gọn</label>
+                <input
+                    type="text"
+                    class="link_id form-control"
+                    name="link_id"
+                    placeholder="ID tùy chỉnh"
+                    value="<%=req.old.link_id%>"
+                />
+                <span class="text-danger"><%=req.errors.link_id%></span>
+            </div>
+            <button class="btn btn-success mt-3 w-100">Rút gọn</button>
+        </form>
+    </div>
+</div>
+<script>
+    const customizeId = document.querySelector("#customize_id")
+    const customizeGroup = document.querySelector(".customize-group")
+    customizeId.checked = true
+    customizeId.onchange = (e) => {
+        if (e.target.checked) {
+            customizeGroup.style.display = ""
+        } else {
+            customizeGroup.style.display = "none"
+        }
+    }
+</script>
