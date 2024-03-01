@@ -15,7 +15,7 @@ var usersRouter = require("./routes/users")
 const authRouter = require("./routes/auth")
 
 const validateMiddleware = require("./middlewares/validate.middleware")
-const authMiddleware = require("./middlewares/auth.middleware")
+// const authMiddleware = require("./middlewares/auth.middleware")
 
 var app = express()
 
@@ -53,7 +53,7 @@ app.use(express.static(path.join(__dirname, "public")))
 
 app.use(validateMiddleware)
 app.use("/auth", authRouter)
-app.use(authMiddleware)
+// app.use(authMiddleware)
 app.use("/", indexRouter)
 app.use("/users", usersRouter)
 

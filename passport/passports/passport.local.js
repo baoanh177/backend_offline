@@ -8,7 +8,7 @@ module.exports = new LocalStrategy({
     passwordField: "password"
 },
 async (email, password, done) => {
-    const localProvider = await Provider.findOne({ where: { name: 'local' } })
+    const [localProvider] = await Provider.findOrCreate({ where: { name: 'local' } })
     const user = await User.findOne({
         where: {
             email,
@@ -20,7 +20,6 @@ async (email, password, done) => {
             message: "Tài khoản không tồn tại"
         })
     }
-    console.log(user)
     if(!bcrypt.compareSync(password, user.password)) {
         return done(null, false, {
             message: "Mật khẩu không chính xác"

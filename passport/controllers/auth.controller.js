@@ -11,11 +11,11 @@ module.exports = {
         }
         const error = req.flash("error")
         const msg = req.flash("msg")
-        res.render("auth/login", { error, msg })
+        res.render("auth/login", { error, msg, layout: "layouts/auth-layout" })
     },
     forgotPassword: (req, res) => {
         const msg = req.flash("msg")
-        res.render("auth/forgot-password", { req, msg })
+        res.render("auth/forgot-password", { req, msg, layout: "layouts/auth-layout" })
     },
     handleSendEmail: async (req, res) => {
         const body = await req.validate(req.body, {
@@ -60,7 +60,7 @@ module.exports = {
         if(!req.cookies.resetId || !bcrypt.compareSync(id, req.cookies.resetId)) {
             return res.redirect("/")
         }
-        res.render("auth/reset-password", { req })
+        res.render("auth/reset-password", { req, layout: "layouts/auth-layout" })
     },
     handleResetPassword: async (req, res) => {
         const body = await req.validate(req.body, {

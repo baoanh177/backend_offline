@@ -1,0 +1,28 @@
+<h1>Roles</h1>
+<a href="/roles/add" class="btn btn-success">Thêm</a>
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Name</th>
+            <th>Sửa</th>
+            <th>Xóa</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% roles.forEach((role, index) => { %>
+            <tr>
+                <td class="col-1"><%=index%></td>
+                <td><%=role.name%></td>
+                <td class="col-1">
+                    <a href="/roles/edit" class="btn btn-warning">Sửa</a>
+                </td>
+                <td class="col-1">
+                    <form action="/" method="post" onsubmit="return confirm('Chắc chắn xóa?')">
+                        <button class="btn btn-danger">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

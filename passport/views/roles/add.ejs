@@ -1,0 +1,46 @@
+<h1>Thêm Role</h1>
+<% if (msg.length) { %>
+    <div class="alert alert-success"><%=msg%></div>
+<% } %>
+<form action="" method="post">
+    <div>
+        <input type="text" name="name" class="form-control" placeholder="Enter role...">
+        <span class="text-danger"><%=req.errors.name%></span>
+    </div>
+    <div class="mb-3">
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Chức năng</th>
+                    <th>Quyền</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Admin</td>
+                    <td>
+                        <div class="row">
+                            <div class="col-3">
+                                <input type="checkbox" name="permissions" value="user/create">    
+                                <label for="">Thêm</label>
+                            </div>
+                            <div class="col-3">
+                                <input type="checkbox" name="permissions" value="user/read">    
+                                <label for="">Xem</label>
+                            </div>
+                            <div class="col-3">
+                                <input type="checkbox" name="permissions" value="user/update">    
+                                <label for="">Sửa</label>
+                            </div>
+                            <div class="col-3">
+                                <input type="checkbox" name="permissions" value="user/delete">    
+                                <label for="">Xóa<a href="http://"></a></label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <button class="btn btn-success mt-3">Thêm</button>
+</form>
