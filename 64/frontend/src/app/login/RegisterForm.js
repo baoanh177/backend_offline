@@ -1,15 +1,14 @@
 "use client"
-import Cookies from "js-cookie"
-import { useRouter } from "next/navigation"
+
+import { toast } from "react-toastify"
 
 function RegisterForm({ setLogin }) {
-    const router = useRouter()
 
     const handleRegister = async e => {
         e.preventDefault()
         const formData = Object.fromEntries([...new FormData(e.target)])
-        if(formData.password != formData.confirm) return alert("Mật khẩu k khớp")
-        const response = await fetch("http://localhost:8080/api/register", {
+        if(formData.password != formData.confirm) return toast.error("Mật khẩu không khớp")
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_ORIGIN}/api/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -19,13 +18,13 @@ function RegisterForm({ setLogin }) {
         if (!response.ok) {
             const data = await response.json()
             Object.keys(data.errors).forEach(key => {
-                alert(data.errors[key])
+                toast.error(data.errors[key])
             })
             return
         }
         const data = await response.json()
-        alert("Đăng kí xong rồi, check mail để active")
-        a.target.reset()
+        toast.success("Đăng kí được rồi, check mail để active")
+        e.target.reset()
     }
 
     return <>

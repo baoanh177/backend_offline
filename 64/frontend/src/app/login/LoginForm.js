@@ -1,6 +1,7 @@
 "use client"
 import Cookies from "js-cookie"
 import { useRouter } from "next/navigation"
+import { toast } from "react-toastify"
 
 function LoginForm({ setLogin }) {
     const router = useRouter()
@@ -15,7 +16,12 @@ function LoginForm({ setLogin }) {
             },
             body: JSON.stringify(formData)
         })
-        if (!response.ok) return alert("Something went wrong")
+        if (!response.ok) {
+            if(response.status == 403) {
+                Cookies.set("activeEmail", formData.email)
+                return router.push("/active")
+            }
+        }
         const data = await response.json()
         Object.keys(data.data).forEach(key => {
             Cookies.set(key, data.data[key])

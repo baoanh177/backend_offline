@@ -3,6 +3,7 @@
 import Cookies from "js-cookie"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 
 function Home() {
     const router = useRouter()
@@ -12,20 +13,22 @@ function Home() {
         const access = Cookies.get("accessToken")
         const refresh = Cookies.get("refreshToken")
         if (!access || !refresh) return router.push("/login")
-        fetch("http://localhost:8080/api/accounts", {
+        fetch(`${process.env.NEXT_PUBLIC_SERVER_ORIGIN}/api/accounts`, {
             headers: { Authorization: `Bearer ${access}` },
         })
             .then((res) => res.json())
             .then((data) => {
                 setUser(data.data)
             })
-            .catch((e) => console.error(e))
+            .catch((e) => {
+                console.error(e)
+            })
     }, [])
 
     const handleLogout = async () => {
         const access = Cookies.get("accessToken")
         const refresh = Cookies.get("refreshToken")
-        const response = await fetch("http://localhost:8080/api/logout", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_ORIGIN}/api/logout`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${access}`,
@@ -36,6 +39,7 @@ function Home() {
         if (response.ok) {
             Cookies.remove("accessToken")
             Cookies.remove("refreshToken")
+            toast.success("Logout OK")
             router.push("/login")
         }
     }

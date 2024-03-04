@@ -6,6 +6,7 @@ const { User, Black_token } = require("../models/index")
 const { string, object } = require("yup")
 const sendMail = require("../utils/mail")
 const bcrypt = require("bcrypt")
+const { Op } = require("sequelize")
 
 module.exports = {
     google: async (req, res) => {
@@ -75,7 +76,7 @@ module.exports = {
             })
             await schema.validate(req.body)
         } catch (e) {
-            response.error( res, 400, "Bad Request", 
+            return response.error( res, 400, "Bad Request", 
                 passwordError && { password: passwordError } 
             )
                 
@@ -85,7 +86,7 @@ module.exports = {
                 where: { email: req.body.email, provider: "local" },
             })
             if (user)
-                response.error(res, 400, "Bad Request", {
+            return response.error(res, 400, "Bad Request", {
                     email: "Email đã tồn tại",
                 })
 
@@ -96,7 +97,7 @@ module.exports = {
                 provider: "local",
                 status: false
             })
-            if(!newUser) response.error(res, 500, "Server Error")
+            if(!newUser) return response.error(res, 500, "Server Error")
             const activeToken = jwt.createActiveToken({ userId: newUser.id, activeAccount: true })
             await sendMail(req.body.email, "Kích hoạt tài khoản", activeToken)
             response.success(res, 200, "Success")
@@ -116,7 +117,7 @@ module.exports = {
             if(!bcrypt.compareSync(req.body.password, user.password)) {
                 return response.error(res, 400, "Bad Request", "Mật khẩu không đúng")
             }
-            if(!user.status) return response.error(res, 400, "Bad Request", "Chua duoc active")
+            if(!user.status) return response.error(res, 403, "Bad Request", "Chua duoc active")
 
             const accessToken = jwt.createAccess({ userId: req.user.id })
             const refreshToken = jwt.createRefresh()
@@ -154,14 +155,14 @@ module.exports = {
         const { id } = req.query
         try {
             const data = jwt.tokenDecode(id)
-            if(!data.activeAccount) response.error(res, 404, "Not Found")
+            if(!data.activeAccount) return response.error(res, 400, "Bad Request")
             await User.update({
                 status: true
             }, { where: { id: data.userId } })
             res.end(`<h1>Active roi</h1><a href='${process.env.CLIENT_ORIGIN}/login'>Go home</a>`)
         }catch(e) {
             console.log(e)
-            response.error(res, 404, "Not Found")
+            response.error(res, 400, "Bad Request")
         }
     },
     logout: async (req, res) => {
@@ -171,4 +172,20 @@ module.exports = {
         await Black_token.create({ refresh_token: req.body.refresh_token })
         response.success(res, 200, "Success")
     },
+    sendActiveLink: async (req, res) => {
+        const user = await User.findOne({
+            where: {
+                email: req.body.email,
+                status: {
+                    [Op.or]: null,
+                    [Op.or]: false,
+                },
+                provider: "local"
+            }
+        })
+        if(!user) return response.error(res, 400, "Bad Request", "User không tồn tại")
+        const activeToken = jwt.createActiveToken({ userId: user.id, activeAccount: true })
+        await sendMail(req.body.email, "Kích hoạt tài khoản", activeToken)
+        response.success(res, 200, "Success")
+    }
 }

@@ -29,5 +29,6 @@ router.get("/accounts", authMiddleware, userController.accounts)
 router.post("/logout", authMiddleware, authController.logout)
 router.post("/register", authController.register)
 router.get("/active-account", authController.activeAccount)
+router.post("/active-account", authController.sendActiveLink)
 
 module.exports = router
